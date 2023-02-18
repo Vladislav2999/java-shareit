@@ -7,7 +7,7 @@ import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
-import javax.validation.Valid;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

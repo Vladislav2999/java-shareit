@@ -22,9 +22,11 @@ public class ItemController {
     private static final String SHARER_USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
-    public Item create(@RequestBody @Valid ItemDto itemDto,
+    public ItemDto create(@RequestBody @Valid ItemDto itemDto,
                        @RequestHeader(SHARER_USER_ID) Long userId) {
-        return itemService.create(itemDto, userId);
+        return ItemMapper.toItemDto( itemService.create(itemDto, userId));
+
+
     }
 
     @PatchMapping("/{itemId}")

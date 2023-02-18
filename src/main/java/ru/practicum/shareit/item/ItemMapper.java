@@ -1,12 +1,13 @@
 package ru.practicum.shareit.item;
 
+import org.mapstruct.Mapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.dto.ItemDto;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.Optional;
-
+@Mapper
 public class ItemMapper {
 
     public static ItemDto toItemDto(Item item) {

@@ -26,7 +26,6 @@ public class ItemController {
                        @RequestHeader(SHARER_USER_ID) Long userId) {
         return itemService.create(itemDto, userId);
     }
-
     @PatchMapping("/{itemId}")
     public ItemDto update(@RequestHeader(SHARER_USER_ID) Long userId,
                           @RequestBody ItemDto itemDto,

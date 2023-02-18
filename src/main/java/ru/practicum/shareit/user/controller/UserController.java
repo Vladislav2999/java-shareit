@@ -29,12 +29,10 @@ public class UserController {
             throw new DuplicateException("Пользователь не существует.");
         }
     }
-
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable("id") Long userId) {
         return UserMapper.toUserDto(userService.getUserById(userId));
     }
-
     @GetMapping
     public List<UserDto> getAll() {
         return userService.getAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());

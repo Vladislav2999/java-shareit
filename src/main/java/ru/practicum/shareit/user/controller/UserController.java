@@ -15,11 +15,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
+
     @PostMapping
     public UserDto create(@RequestBody @Valid UserDto userDto) {
         return UserMapper.toUserDto(userService.create(UserMapper.toUser(userDto)));
     }
+
     @PatchMapping("/{id}")
     public UserDto update(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
         if (userId > 0) {
@@ -29,10 +32,12 @@ public class UserController {
             throw new DuplicateException("Пользователь не существует.");
         }
     }
+
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable("id") Long userId) {
         return UserMapper.toUserDto(userService.getUserById(userId));
     }
+
     @GetMapping
     public List<UserDto> getAll() {
         return userService.getAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());

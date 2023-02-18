@@ -8,6 +8,7 @@ import ru.practicum.shareit.user.model.User;
 import java.util.Optional;
 
 public class ItemMapper {
+
     public static ItemDto toItemDto(Item item) {
         return new ItemDto(
                 item.getId(),
@@ -17,6 +18,7 @@ public class ItemMapper {
                 Optional.ofNullable(item.getRequest()).map(ItemRequest::getId).orElse(null)
         );
     }
+
     public static Item toItem(ItemDto itemDto, User user) {
         return new Item(
                 itemDto.getId(),

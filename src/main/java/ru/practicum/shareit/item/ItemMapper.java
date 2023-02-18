@@ -7,6 +7,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.Optional;
 
+//тесты апи не дали в мавен добавить mapstruct
 public class ItemMapper {
 
     public static ItemDto toItemDto(Item item) {

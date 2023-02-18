@@ -16,7 +16,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
+    @PostMapping
+    public UserDto create(@RequestBody @Valid UserDto userDto) {
+        return UserMapper.toUserDto(userService.create(UserMapper.toUser(userDto)));
+    }
     @PatchMapping("/{id}")
     public UserDto update(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
         if (userId > 0) {

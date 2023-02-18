@@ -39,8 +39,4 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    @PostMapping
-    public UserDto create(@RequestBody @Valid UserDto userDto) {
-        return UserMapper.toUserDto(userRepository.create(UserMapper.toUser(userDto)));
-    }
 }

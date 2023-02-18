@@ -10,6 +10,7 @@ import ru.practicum.shareit.exception_handler.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.ItemController;
 import ru.practicum.shareit.user.controller.UserController;
 
+
 @Slf4j
 @RestControllerAdvice(assignableTypes = {ItemController.class, UserController.class})
 

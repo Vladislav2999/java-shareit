@@ -8,6 +8,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,12 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+
+    //не совсем понял, перенести все маппинги?
+    @PostMapping
+    public UserDto create(@RequestBody @Valid UserDto userDto) {
+        return UserMapper.toUserDto(userService.create(UserMapper.toUser(userDto)));
+    }
 
     @PatchMapping("/{id}")
     public UserDto update(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {

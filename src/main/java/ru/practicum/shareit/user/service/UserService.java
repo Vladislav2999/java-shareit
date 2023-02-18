@@ -41,10 +41,5 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    //не совсем понял, перенести все маппинги? или вот один?
-    @PostMapping
-    public UserDto create(@RequestBody @Valid UserDto userDto) {
-        return UserMapper.toUserDto(userRepository.create(UserMapper.toUser(userDto)));
-    }
 
 }

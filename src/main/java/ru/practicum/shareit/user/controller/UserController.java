@@ -3,10 +3,9 @@ package ru.practicum.shareit.user.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception_handler.exception.DuplicateException;
-import ru.practicum.shareit.user.UserMapper;
+import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,10 +15,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
-    //не совсем понял, перенести все маппинги?
     @PostMapping
     public UserDto create(@RequestBody @Valid UserDto userDto) {
         return UserMapper.toUserDto(userService.create(UserMapper.toUser(userDto)));
@@ -29,7 +26,7 @@ public class UserController {
     public UserDto update(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
         if (userId > 0) {
             userDto.setId(userId);
-            return UserMapper.toUserDto(userService.update(userId, UserMapper.toUser(userDto)));
+            return UserMapper.toUserDto(userService.update(userId, userDto));
         } else {
             throw new DuplicateException("Пользователь не существует.");
         }
@@ -37,7 +34,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable("id") Long userId) {
-        return UserMapper.toUserDto(userService.getUserById(userId));
+        return UserMapper.toUserDto(userService.getById(userId));
     }
 
     @GetMapping

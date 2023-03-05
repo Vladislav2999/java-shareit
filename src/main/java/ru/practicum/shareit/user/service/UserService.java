@@ -1,40 +1,19 @@
 package ru.practicum.shareit.user.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception_handler.exception.EntityNotFoundException;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.repository.UserRepository;
-
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
+public interface UserService {
 
-    private final UserRepository userRepository;
+    User create(User user);
 
-    public User create(User user) {
-        return userRepository.create(user);
-    }
+    User update(Long userId, UserDto userDto);
 
-    public User update(Long userId, User user) {
-        return userRepository.update(userId, user);
-    }
+    User getById(Long userId);
 
-    public List<User> getAll() {
-        return userRepository.getAll();
-    }
+    List<User> getAll();
 
-    public User getUserById(Long userId) {
-        return userRepository.getUserById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Пользователь не существует"));
-    }
-
-    public void deleteById(Long userId) {
-        userRepository.deleteById(userId);
-    }
-
-
+    void deleteById(Long userId);
 }

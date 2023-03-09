@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDtoIn;
 import ru.practicum.shareit.booking.dto.BookingDtoOut;
 import ru.practicum.shareit.booking.service.BookingService;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class BookingController {
     @PostMapping
     public BookingDtoOut create(@RequestHeader(USER_ID) Long userId,
                                 @Validated @RequestBody BookingDtoIn bookingDto) {
-        return bookingService.create(bookingDto, userId);
+        return ResponseEntity.ok().body(bookingService.create(bookingDto, userId)).getBody();
     }
 
     @PatchMapping("/{bookingId}")

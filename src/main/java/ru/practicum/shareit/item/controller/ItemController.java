@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.comment.model.dto.CommentDto;
 import ru.practicum.shareit.comment.service.CommentService;
@@ -26,7 +27,7 @@ public class ItemController {
     @PostMapping
     public ItemDtoOut create(@RequestBody @Valid ItemDtoIn itemDto,
                              @RequestHeader(SHARER_USER_ID) Long userId) {
-        return itemService.create(itemDto, userId);
+        return ResponseEntity.ok().body(itemService.create(itemDto, userId)).getBody();
     }
 
     @PatchMapping("/{itemId}")

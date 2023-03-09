@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception_handler.exception.DuplicateException;
 import ru.practicum.shareit.user.mapper.UserMapper;

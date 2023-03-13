@@ -26,28 +26,33 @@ public class BookingController {
     }
 
     @PatchMapping("/{bookingId}")
-    public BookingDtoOut update(@RequestParam("approved") Boolean approved,
-                                @PathVariable("bookingId") Long bookingId,
-                                @RequestHeader(USER_ID) Long userId) {
-        return bookingService.update(bookingId, userId, approved);
+    public ResponseEntity<BookingDtoOut> update(@RequestParam("approved") Boolean approved,
+                                                @PathVariable("bookingId") Long bookingId,
+                                                @RequestHeader(USER_ID) Long userId) {
+
+
+        return ResponseEntity.ok().body(bookingService.update(bookingId, userId, approved));
     }
 
     @GetMapping("/{bookingId}")
-    public BookingDtoOut getById(@PathVariable("bookingId") Long bookingId,
-                                 @RequestHeader(USER_ID) Long userId) {
-        return bookingService.getById(bookingId, userId);
+    public ResponseEntity<BookingDtoOut> getById(@PathVariable("bookingId") Long bookingId,
+                                                 @RequestHeader(USER_ID) Long userId) {
+        return ResponseEntity.ok().body(bookingService.getById(bookingId, userId));
+
     }
 
     @GetMapping("/owner")
-    public List<BookingDtoOut> getByOwner(@RequestParam(value = "state", defaultValue = "ALL") String state,
-                                          @RequestHeader(USER_ID) Long userId) {
-        return bookingService.getByOwner(userId, state);
+    public ResponseEntity<List<BookingDtoOut>> getByOwner(@RequestParam(value = "state", defaultValue = "ALL") String state,
+                                                          @RequestHeader(USER_ID) Long userId) {
+        return ResponseEntity.ok().body(bookingService.getByOwner(userId,state));
+
     }
 
     @GetMapping
-    public List<BookingDtoOut> getByBooker(@RequestParam(value = "state", defaultValue = "ALL") String state,
-                                           @RequestHeader(USER_ID) Long userId) {
-        return bookingService.getByBooker(userId, state);
+    public ResponseEntity<List<BookingDtoOut>> getByBooker(@RequestParam(value = "state", defaultValue = "ALL") String state,
+                                                           @RequestHeader(USER_ID) Long userId) {
+        return ResponseEntity.ok().body(bookingService.getByBooker(userId,state));
+
     }
 
 }

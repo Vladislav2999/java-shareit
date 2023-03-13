@@ -25,23 +25,26 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public UserDto update(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
+    public ResponseEntity<User> update(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
         if (userId > 0) {
             userDto.setId(userId);
-            return UserMapper.toUserDto(userService.update(userId, userDto));
+
+            return ResponseEntity.ok().body(userService.update(userId,userDto));
         } else {
             throw new DuplicateException("Пользователь не существует.");
         }
     }
 
     @GetMapping("/{id}")
-    public UserDto getById(@PathVariable("id") Long userId) {
-        return UserMapper.toUserDto(userService.getById(userId));
+    public ResponseEntity<User> getById(@PathVariable("id") Long userId) {
+
+        return ResponseEntity.ok().body(userService.getById(userId));
     }
 
     @GetMapping
-    public List<UserDto> getAll() {
-        return userService.getAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
+    public ResponseEntity<List<UserDto>> getAll() {
+        return ResponseEntity.ok().body(userService.getAll().stream().map(UserMapper::toUserDto)
+                .collect(Collectors.toList()));
     }
 
     @DeleteMapping("/{id}")

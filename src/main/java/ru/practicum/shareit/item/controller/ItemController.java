@@ -31,34 +31,39 @@ public class ItemController {
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDtoOut update(@RequestHeader(SHARER_USER_ID) Long userId,
-                             @PathVariable("itemId") Long itemId,
-                             @RequestBody ItemDtoIn itemDto) {
+    public ResponseEntity<ItemDtoOut> update(@RequestHeader(SHARER_USER_ID) Long userId,
+                                             @PathVariable("itemId") Long itemId,
+                                             @RequestBody ItemDtoIn itemDto) {
         itemDto.setId(itemId);
-        return itemService.update(itemDto, userId);
+        return ResponseEntity.ok().body(itemService.update(itemDto, userId));
+
     }
 
     @GetMapping("{itemId}")
-    public ItemDtoOut getItemById(@RequestHeader(SHARER_USER_ID) Long userId,
-                                  @PathVariable("itemId") Long itemId) {
-        return itemService.getById(userId, itemId);
+    public ResponseEntity<ItemDtoOut> getItemById(@RequestHeader(SHARER_USER_ID) Long userId,
+                                                  @PathVariable("itemId") Long itemId) {
+        return ResponseEntity.ok().body(itemService.getById(userId, itemId));
+
     }
 
     @GetMapping
-    public List<ItemDtoOut> getItems(@RequestHeader(SHARER_USER_ID) Long userId) {
-        return itemService.getAll(userId);
+    public ResponseEntity<List<ItemDtoOut>> getItems(@RequestHeader(SHARER_USER_ID) Long userId) {
+        return ResponseEntity.ok().body(itemService.getAll(userId));
+
     }
 
     @GetMapping("/search")
-    public List<ItemDtoOut> getItemsByText(@RequestHeader(SHARER_USER_ID) Long userId,
-                                           @RequestParam("text") String text) {
-        return itemService.getByText(text, userId);
+    public ResponseEntity<List<ItemDtoOut>> getItemsByText(@RequestHeader(SHARER_USER_ID) Long userId,
+                                                           @RequestParam("text") String text) {
+
+        return ResponseEntity.ok().body(itemService.getByText(text, userId));
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentDto createComment(@Valid @RequestBody CommentDto commentDto,
-                                    @PathVariable("itemId") Long itemId,
-                                    @RequestHeader(SHARER_USER_ID) Long userId) {
-        return commentService.save(commentDto, itemId, userId);
+    public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentDto commentDto,
+                                                    @PathVariable("itemId") Long itemId,
+                                                    @RequestHeader(SHARER_USER_ID) Long userId) {
+
+        return ResponseEntity.ok().body(commentService.save(commentDto, itemId, userId));
     }
 }

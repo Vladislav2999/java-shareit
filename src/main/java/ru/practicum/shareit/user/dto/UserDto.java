@@ -17,10 +17,11 @@ public class UserDto {
 
     @NotNull
     private long id;
+
     @NotBlank(message = "Имя пользователя не указано")
     private String name;
+
     @Email(message = "Введен некорректный email.")
     @NotNull(message = "Email не указан")
     private String email;
-
 }

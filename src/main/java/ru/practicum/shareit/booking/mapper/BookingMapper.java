@@ -1,10 +1,8 @@
 package ru.practicum.shareit.booking.mapper;
 
-import org.mapstruct.Mapper;
 import ru.practicum.shareit.booking.dto.BookingDtoIn;
 import ru.practicum.shareit.booking.dto.BookingDtoOut;
 import ru.practicum.shareit.booking.model.Booking;
-
 
 public class BookingMapper {
 

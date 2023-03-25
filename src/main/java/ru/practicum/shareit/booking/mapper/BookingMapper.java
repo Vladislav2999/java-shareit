@@ -6,9 +6,7 @@ import ru.practicum.shareit.booking.dto.BookingDtoOut;
 import ru.practicum.shareit.booking.model.Booking;
 
 
-@Mapper //на букинге попробовал, но не совемм понял наверно как оно получилось.
-// Хотелось бы получить обратную связь))
-public interface BookingMapper {
+public class BookingMapper {
 
     public static BookingDtoOut toBookingDtoOut(Booking booking) {
         return new BookingDtoOut(

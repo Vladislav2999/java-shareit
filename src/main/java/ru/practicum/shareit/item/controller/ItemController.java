@@ -74,6 +74,6 @@ public class ItemController {
                                                     @PathVariable("itemId") Long itemId,
                                                     @RequestHeader(SHARER_USER_ID) Long userId) {
 
-        return ResponseEntity.ok().body(commentService.save(commentDto, itemId, userId));
+        return ResponseEntity.ok().body(commentService.create(commentDto, itemId, userId));
     }
 }

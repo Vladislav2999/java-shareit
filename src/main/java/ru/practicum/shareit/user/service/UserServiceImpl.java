@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.exception_handler.exception.DuplicateException;
-import ru.practicum.shareit.exception_handler.exception.EntityNotFoundException;
-import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.exceptionHandler.exception.DuplicateException;
+import ru.practicum.shareit.exceptionHandler.exception.EntityNotFoundException;
+import ru.practicum.shareit.user.model.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         log.info("Запрос обновления пользователя с id " + userId);
         User user = userRepository
                 .findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + userId + "не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + userId + " не найден"));
         if (checkEmail(user, userDto)) {
             Optional.ofNullable(userDto.getEmail()).ifPresent(user::setEmail);
         } else throw new DuplicateException("email уже используется");
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public User getById(Long userId) {
         log.info("Запрос информации о пользователе с id " + userId);
         return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Пользовательс id " + userId + " не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + userId + " не найден"));
     }
 
     @Override

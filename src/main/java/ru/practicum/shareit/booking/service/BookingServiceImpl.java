@@ -3,23 +3,25 @@ package ru.practicum.shareit.booking.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingDtoIn;
 import ru.practicum.shareit.booking.dto.BookingDtoOut;
-import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.model.Status;
+import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.exception_handler.exception.BookingException;
-import ru.practicum.shareit.exception_handler.exception.EntityNotFoundException;
-import ru.practicum.shareit.exception_handler.exception.WrongBookingStateException;
+import ru.practicum.shareit.exceptionHandler.exception.BookingException;
+import ru.practicum.shareit.exceptionHandler.exception.WrongBookingStateException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.exceptionHandler.exception.EntityNotFoundException;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -59,7 +61,7 @@ public class BookingServiceImpl implements BookingService {
         if (booking.getItem().getAvailable()
                 && !booking.getStart().isAfter(booking.getEnd())) {
             booking.setStatus(Status.WAITING);
-            return getById(bookingRepository.save(booking).getId(), userId);
+            return BookingMapper.toBookingDtoOut(bookingRepository.save(booking));
         } else {
             throw new BookingException("Вещь не доступна для аренды в данный момент");
         }
@@ -73,7 +75,7 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new EntityNotFoundException("Бронирование с id " + bookingId + " не найдено"));
         if (userId.equals(booking.getItem().getOwner().getId())) {
             if (booking.getStatus() == Status.APPROVED) {
-                throw new BookingException("Booking is already approved.");
+                throw new BookingException("Бронирование уже подтверждено");
             }
             if (isTrue(approved)) {
                 booking.setStatus(Status.APPROVED);
@@ -100,14 +102,15 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDtoOut> getByOwner(Long id, String state) {
+    public List<BookingDtoOut> getByOwner(Long id, String state, int from, int size) {
         log.info("Запрос списка бронирований у владельца с id " + id + " с состоянием " + state);
         List<Booking> bookings = Collections.emptyList();
         userService.getById(id);
+        Pageable page = PageRequest.of((from / size), size, sort);
         if (EnumUtils.isValidEnum(State.class, state)) {
             switch (State.valueOf(state)) {
                 case ALL:
-                    bookings = bookingRepository.findByItemOwnerId(id, sort);
+                    bookings = bookingRepository.findByItemOwnerId(id, page);
                     break;
                 case CURRENT:
                     LocalDateTime currentTime = LocalDateTime.now();
@@ -115,20 +118,20 @@ public class BookingServiceImpl implements BookingService {
                             id,
                             currentTime,
                             currentTime,
-                            sort
+                            page
                     );
                     break;
                 case PAST:
-                    bookings = bookingRepository.findByItemOwnerIdAndEndIsBefore(id, LocalDateTime.now(), sort);
+                    bookings = bookingRepository.findByItemOwnerIdAndEndIsBefore(id, LocalDateTime.now(), page);
                     break;
                 case FUTURE:
-                    bookings = bookingRepository.findByItemOwnerIdAndStartIsAfter(id, LocalDateTime.now(), sort);
+                    bookings = bookingRepository.findByItemOwnerIdAndStartIsAfter(id, LocalDateTime.now(), page);
                     break;
                 case WAITING:
-                    bookings = bookingRepository.findByItemOwnerIdAndStatus(id, Status.WAITING, sort);
+                    bookings = bookingRepository.findByItemOwnerIdAndStatus(id, Status.WAITING, page);
                     break;
                 case REJECTED:
-                    bookings = bookingRepository.findByItemOwnerIdAndStatus(id, Status.REJECTED, sort);
+                    bookings = bookingRepository.findByItemOwnerIdAndStatus(id, Status.REJECTED, page);
                     break;
             }
         } else throw new WrongBookingStateException("Ошибка в параметре состояния");
@@ -137,14 +140,16 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDtoOut> getByBooker(Long id, String state) {
+    public List<BookingDtoOut> getByBooker(Long id, String state, int from, int size) {
         log.info("Запрос списка бронирований у арендатора с id " + id + " с состоянием " + state);
         List<Booking> bookings = Collections.emptyList();
         userService.getById(id);
+        Pageable page = PageRequest.of((from / size), size, sort);
+
         if (EnumUtils.isValidEnum(State.class, state)) {
             switch (State.valueOf(state)) {
                 case ALL:
-                    bookings = bookingRepository.findByBookerId(id, sort);
+                    bookings = bookingRepository.findByBookerId(id, page);
                     break;
                 case CURRENT:
                     LocalDateTime currentTime = LocalDateTime.now();
@@ -152,19 +157,19 @@ public class BookingServiceImpl implements BookingService {
                             id,
                             currentTime,
                             currentTime,
-                            sort);
+                            page);
                     break;
                 case PAST:
-                    bookings = bookingRepository.findByBookerIdAndEndIsBefore(id, LocalDateTime.now(), sort);
+                    bookings = bookingRepository.findByBookerIdAndEndIsBefore(id, LocalDateTime.now(), page);
                     break;
                 case FUTURE:
-                    bookings = bookingRepository.findByBookerIdAndStartIsAfter(id, LocalDateTime.now(), sort);
+                    bookings = bookingRepository.findByBookerIdAndStartIsAfter(id, LocalDateTime.now(), page);
                     break;
                 case WAITING:
-                    bookings = bookingRepository.findByBookerIdAndStatus(id, Status.WAITING, sort);
+                    bookings = bookingRepository.findByBookerIdAndStatus(id, Status.WAITING, page);
                     break;
                 case REJECTED:
-                    bookings = bookingRepository.findByBookerIdAndStatus(id, Status.REJECTED, sort);
+                    bookings = bookingRepository.findByBookerIdAndStatus(id, Status.REJECTED, page);
                     break;
             }
         } else throw new WrongBookingStateException("Ошибка в параметре состояния");

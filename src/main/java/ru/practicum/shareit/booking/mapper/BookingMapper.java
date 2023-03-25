@@ -1,10 +1,14 @@
 package ru.practicum.shareit.booking.mapper;
 
+import org.mapstruct.Mapper;
 import ru.practicum.shareit.booking.dto.BookingDtoIn;
 import ru.practicum.shareit.booking.dto.BookingDtoOut;
 import ru.practicum.shareit.booking.model.Booking;
 
-public class BookingMapper {
+
+@Mapper //на букинге попробовал, но не совемм понял наверно как оно получилось.
+// Хотелось бы получить обратную связь))
+public interface BookingMapper {
 
     public static BookingDtoOut toBookingDtoOut(Booking booking) {
         return new BookingDtoOut(

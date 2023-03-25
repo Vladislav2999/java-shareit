@@ -1,9 +1,6 @@
-package ru.practicum.shareit.user.dto;
+package ru.practicum.shareit.user.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,8 +12,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class UserDto {
 
-    @NotNull
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Имя пользователя не указано")
     private String name;

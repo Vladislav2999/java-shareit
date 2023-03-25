@@ -1,4 +1,4 @@
-package ru.practicum.shareit.exception_handler.exception;
+package ru.practicum.shareit.exceptionHandler.exception;
 
 public class BookingException extends RuntimeException {
 

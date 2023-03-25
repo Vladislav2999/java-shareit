@@ -24,5 +24,6 @@ public class BookingDtoIn {
     @Future
     private LocalDateTime end;
 
+    @NotNull
     private Long itemId;
 }

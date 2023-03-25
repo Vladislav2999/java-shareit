@@ -13,8 +13,8 @@ public interface BookingService {
 
     BookingDtoOut getById(Long bookingId, Long userId);
 
-    List<BookingDtoOut> getByBooker(Long bookerId, String state);
+    List<BookingDtoOut> getByBooker(Long bookerId, String state, int from, int size);
 
-    List<BookingDtoOut> getByOwner(Long ownerId, String state);
+    List<BookingDtoOut> getByOwner(Long ownerId, String state, int from, int size);
 
 }

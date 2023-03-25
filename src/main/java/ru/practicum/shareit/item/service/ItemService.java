@@ -11,11 +11,11 @@ public interface ItemService {
 
     ItemDtoOut update(ItemDtoIn itemDto, Long userId);
 
-    ItemDtoOut getById(Long itemId, Long ownerId);
+    ItemDtoOut getByItemIdAndUserId(Long itemId, Long ownerId);
 
-    List<ItemDtoOut> getAll(Long userId);
+    List<ItemDtoOut> getAll(Long userId, int from, int size);
 
-    List<ItemDtoOut> getByText(String text,  Long ownerId);
+    List<ItemDtoOut> getByText(String text,  Long ownerId, int from, int size);
 
     Item getItemById(Long itemId);
 }

@@ -28,6 +28,8 @@ public class ItemDtoOut {
 
     private List<CommentDto> comments;
 
+    private Long requestId;
+
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
@@ -37,10 +39,11 @@ public class ItemDtoOut {
         private Long bookerId;
     }
 
-    public ItemDtoOut(Long id, String name, String description, Boolean available) {
+    public ItemDtoOut(Long id, String name, String description, Boolean available, Long requestId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.available = available;
+        this.requestId = requestId;
     }
 }

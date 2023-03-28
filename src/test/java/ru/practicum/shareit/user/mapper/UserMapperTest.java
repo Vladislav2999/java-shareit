@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.practicum.shareit.user.mapper.UserMapper.toUser;
 import static ru.practicum.shareit.user.mapper.UserMapper.toUserDto;
 
+
 public class UserMapperTest {
 
     @Test

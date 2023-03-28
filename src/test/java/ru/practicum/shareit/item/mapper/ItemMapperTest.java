@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.practicum.shareit.item.mapper.ItemMapper.toItem;
 import static ru.practicum.shareit.item.mapper.ItemMapper.toItemDtoOut;
 
+
 public class ItemMapperTest {
 
     private final User owner = new User(1L, "name", "email@mail.ru");

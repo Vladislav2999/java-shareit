@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.practicum.shareit.booking.mapper.BookingMapper.toBooking;
 import static ru.practicum.shareit.booking.mapper.BookingMapper.toBookingDtoOut;
 
+
 public class BookingMapperTest {
 
     private static final LocalDateTime START = LocalDateTime.of(2023, 2, 3, 9, 0);

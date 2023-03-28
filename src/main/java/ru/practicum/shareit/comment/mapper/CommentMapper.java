@@ -1,9 +1,11 @@
 package ru.practicum.shareit.comment.mapper;
 
 import lombok.NoArgsConstructor;
+import org.mapstruct.Mapper;
 import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.comment.model.dto.CommentDto;
 
+@Mapper
 @NoArgsConstructor
 public class CommentMapper {
     public static Comment toComment(CommentDto commentDto) {

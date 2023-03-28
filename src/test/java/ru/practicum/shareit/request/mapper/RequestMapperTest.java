@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.practicum.shareit.request.mapper.RequestMapper.toItemRequest;
 import static ru.practicum.shareit.request.mapper.RequestMapper.toItemRequestDto;
 
+
 public class RequestMapperTest {
 
     private final User requestor = new User(1L, "requestor", "requestor@mail.ru");

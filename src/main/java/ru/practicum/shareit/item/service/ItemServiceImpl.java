@@ -94,23 +94,26 @@ public class ItemServiceImpl implements ItemService {
                 .map(CommentMapper::toCommentDto)
                 .collect(toList()));
 
-        Booking lastBooking = bookingRepository.findByEndIsBeforeAndItemOwnerIdAndItemId(
+        Optional <Booking> lastBooking = Optional.ofNullable(bookingRepository.findByEndIsBeforeAndItemOwnerIdAndItemId(
                 LocalDateTime.now(),
                 userId,
                 itemId,
-                Sort.by(Sort.Direction.DESC, "start"));
-        Booking nextBooking = bookingRepository.findByStartIsAfterAndItemOwnerIdAndItemId(
+                Sort.by(Sort.Direction.DESC, "start"))
+                .orElseThrow(() -> new EntityNotFoundException("Информация отсутсвует")));
+
+        Optional<Booking> nextBooking = Optional.ofNullable(bookingRepository.findByStartIsAfterAndItemOwnerIdAndItemId(
                 LocalDateTime.now(),
                 userId,
                 itemId,
-                Sort.by(Sort.Direction.DESC, "start"));
+                Sort.by(Sort.Direction.DESC, "start"))
+                .orElseThrow(() -> new EntityNotFoundException("Информация отсутсвует")));
 
         itemResponse.setLastBooking(lastBooking == null ? null : new ItemDtoOut.Booking(
-                lastBooking.getId(),
-                lastBooking.getBooker().getId()));
+                lastBooking.get().getId(),
+                lastBooking.get().getBooker().getId()));
         itemResponse.setNextBooking(nextBooking == null ? null : new ItemDtoOut.Booking(
-                nextBooking.getId(),
-                nextBooking.getBooker().getId()));
+                nextBooking.get().getId(),
+                nextBooking.get().getBooker().getId()));
 
         return itemResponse;
     }
@@ -156,6 +159,7 @@ public class ItemServiceImpl implements ItemService {
     public Item getItemById(Long itemId) {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Вещь не сущестует"));
+
     }
 
     public ItemDtoOut addBookings(Item item, List<Booking> bookings) {

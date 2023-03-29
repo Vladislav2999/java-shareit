@@ -6,22 +6,10 @@ import ru.practicum.shareit.request.model.ItemRequest;
 
 import java.util.ArrayList;
 
-@Mapper
-public class RequestMapper {
+@Mapper(componentModel = "spring")
+public interface RequestMapper {
 
-    public static ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
-        ItemRequest itemRequest = new ItemRequest();
-        itemRequest.setId(itemRequestDto.getId());
-        itemRequest.setDescription(itemRequestDto.getDescription());
-        return itemRequest;
-    }
+    ItemRequest toItemRequest(ItemRequestDto itemRequestDto);
 
-    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
-        return new ItemRequestDto(
-                itemRequest.getId(),
-                itemRequest.getDescription(),
-                itemRequest.getCreated(),
-                new ArrayList<>()
-        );
-    }
+    ItemRequestDto toItemRequestDto(ItemRequest itemRequest);
 }

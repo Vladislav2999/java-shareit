@@ -35,6 +35,10 @@ public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository itemRequestRepository;
 
+    private final RequestMapper requestMapper;
+
+    private final ItemMapper itemMapper;
+
     @Transactional(readOnly = true)
     @Override
     public List<ItemRequestDto> findAllRequests(Long userId, int from, int size) {
@@ -69,10 +73,10 @@ public class RequestServiceImpl implements RequestService {
                 .findById(requestId)
                 .orElseThrow(() -> new EntityNotFoundException("Запрос вещи с Id " + requestId + " не найден"));
 
-        ItemRequestDto itemRequestDto = RequestMapper.toItemRequestDto(itemRequest);
+        ItemRequestDto itemRequestDto = requestMapper.toItemRequestDto(itemRequest);
         itemRequestDto.setItems(itemRepository.findAllByRequestId(itemRequest.getId())
                 .stream()
-                .map(ItemMapper::toItemDtoOut)
+                .map(itemMapper::toItemDtoOut)
                 .collect(toList()));
         return itemRequestDto;
     }
@@ -83,11 +87,11 @@ public class RequestServiceImpl implements RequestService {
         log.info("Запрос создания запроса от пользователя с id " + userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + userId + " не найден"));
-        ItemRequest itemRequest = RequestMapper.toItemRequest(itemRequestDto);
+        ItemRequest itemRequest = requestMapper.toItemRequest(itemRequestDto);
         itemRequest.setCreated(LocalDateTime.now());
         itemRequest.setRequestor(user);
         itemRequestRepository.save(itemRequest);
-        return RequestMapper.toItemRequestDto(itemRequest);
+        return requestMapper.toItemRequestDto(itemRequest);
     }
 
     private List<ItemRequestDto> getRequestDtoList(List<ItemRequest> itemRequests) { // переводит в List<ItemRequestDto> и расставляет в них нужные items
@@ -99,11 +103,11 @@ public class RequestServiceImpl implements RequestService {
         return itemRequests
                 .stream()
                 .map(itemRequest -> {
-                    ItemRequestDto request = RequestMapper.toItemRequestDto(itemRequest);
+                    ItemRequestDto request = requestMapper.toItemRequestDto(itemRequest);
                     List<Item> itemList = itemsAll.getOrDefault(itemRequest, Collections.emptyList());
                     request.setItems(itemList
                             .stream()
-                            .map(ItemMapper::toItemDtoOut)
+                            .map(itemMapper::toItemDtoOut)
                             .collect(toList()));
                     return request;
                 })

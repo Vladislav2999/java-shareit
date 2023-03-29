@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class BookingDtoOut {
 
     private Long id;
@@ -34,7 +33,7 @@ public class BookingDtoOut {
     @Getter
     @AllArgsConstructor
     public static class Booker {
-        private final long id;
+        private final long booker;
         private final String name;
     }
 

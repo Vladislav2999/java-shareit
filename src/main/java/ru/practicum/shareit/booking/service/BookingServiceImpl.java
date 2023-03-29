@@ -39,6 +39,7 @@ import static org.apache.commons.lang3.BooleanUtils.isTrue;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    private final BookingMapper bookingMapper;
 
     private final UserService userService;
 
@@ -54,14 +55,14 @@ public class BookingServiceImpl implements BookingService {
         if (item.getOwner().getId().equals(userId)) {
             throw new EntityNotFoundException("Пользователь, создавший запрос, является владельцем данной вещи");
         }
-        Booking booking = BookingMapper.toBooking(bookingDto);
+        Booking booking = bookingMapper.toBooking(bookingDto);
         User user = userService.getById(userId);
         booking.setBooker(user);
         booking.setItem(item);
         if (booking.getItem().getAvailable()
                 && !booking.getStart().isAfter(booking.getEnd())) {
             booking.setStatus(Status.WAITING);
-            return BookingMapper.toBookingDtoOut(bookingRepository.save(booking));
+            return bookingMapper.toBookingDtoOut(bookingRepository.save(booking));
         } else {
             throw new BookingException("Вещь не доступна для аренды в данный момент");
         }
@@ -84,7 +85,7 @@ public class BookingServiceImpl implements BookingService {
             } else {
                 throw new ValidationException("Ошибка в параметре approved при обновлении бронирования");
             }
-            return BookingMapper.toBookingDtoOut(booking);
+            return bookingMapper.toBookingDtoOut(booking);
         } else {
             throw new EntityNotFoundException("Пользователь с id " + userId + "не является владельцем");
         }
@@ -98,7 +99,7 @@ public class BookingServiceImpl implements BookingService {
         if (!booking.getBooker().getId().equals(userId) && !booking.getItem().getOwner().getId().equals(userId)) {
             throw new EntityNotFoundException("Пользователь не относится к сделке");
         }
-        return BookingMapper.toBookingDtoOut(booking);
+        return bookingMapper.toBookingDtoOut(booking);
     }
 
     @Override
@@ -136,7 +137,7 @@ public class BookingServiceImpl implements BookingService {
             }
         } else throw new WrongBookingStateException("Ошибка в параметре состояния");
 
-        return bookings.stream().map(BookingMapper::toBookingDtoOut).collect(Collectors.toList());
+        return bookings.stream().map(bookingMapper::toBookingDtoOut).collect(Collectors.toList());
     }
 
     @Override
@@ -174,6 +175,6 @@ public class BookingServiceImpl implements BookingService {
             }
         } else throw new WrongBookingStateException("Ошибка в параметре состояния");
 
-        return bookings.stream().map(BookingMapper::toBookingDtoOut).collect(Collectors.toList());
+        return bookings.stream().map(bookingMapper::toBookingDtoOut).collect(Collectors.toList());
     }
 }

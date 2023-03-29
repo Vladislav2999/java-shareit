@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static ru.practicum.shareit.booking.mapper.BookingMapper.toBooking;
-import static ru.practicum.shareit.booking.mapper.BookingMapper.toBookingDtoOut;
+
 
 
 public class BookingMapperTest {
@@ -28,6 +27,9 @@ public class BookingMapperTest {
 
     private final Item item = new Item(1L, "name", "description", true, owner);
 
+    private BookingMapper bookingMapper;
+
+
     @Test
     public void toBookingDtoOutTest() {
         Booking booking = new Booking(
@@ -39,22 +41,22 @@ public class BookingMapperTest {
                 Status.WAITING
         );
 
-        BookingDtoOut bookingDtoOut = toBookingDtoOut(booking);
+        BookingDtoOut bookingDtoOut = bookingMapper.toBookingDtoOut(booking);
 
         assertNotNull(bookingDtoOut);
         assertEquals(1, bookingDtoOut.getId());
         assertEquals(START, bookingDtoOut.getStart());
         assertEquals(END, bookingDtoOut.getEnd());
         assertEquals(item.getId(), bookingDtoOut.getItem().getId());
-        assertEquals(booker.getId(), bookingDtoOut.getBooker().getId());
+        assertEquals(booker.getId(), bookingDtoOut.getBooker());
         assertEquals(Status.WAITING, bookingDtoOut.getStatus());
     }
 
     @Test
     public void toBookingTest() {
-        BookingDtoIn bookingDtoIn = new BookingDtoIn(null, START, END, null);
+        BookingDtoIn bookingDtoIn = new BookingDtoIn();
 
-        Booking booking = toBooking(bookingDtoIn);
+        Booking booking = bookingMapper.toBooking(bookingDtoIn);
 
         assertNotNull(booking);
         assertEquals(START, booking.getStart());

@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static ru.practicum.shareit.item.mapper.ItemMapper.toItem;
-import static ru.practicum.shareit.item.mapper.ItemMapper.toItemDtoOut;
+
 
 
 public class ItemMapperTest {
@@ -21,13 +20,13 @@ public class ItemMapperTest {
     private final User owner = new User(1L, "name", "email@mail.ru");
     private final User requestor = new User(1L, "requestor", "requestor@mail.ru");
     private final ItemRequest itemRequest = new ItemRequest(1L, "description", requestor, LocalDateTime.now());
-
+    private ItemMapper itemMapper;
     @Test
     void toItemDtoOutTest() {
         Item item = new Item(1L, "name", "description", true, owner);
         item.setRequest(itemRequest);
 
-        ItemDtoOut itemDtoOut = toItemDtoOut(item);
+        ItemDtoOut itemDtoOut = itemMapper.toItemDtoOut(item);
 
         assertNotNull(itemDtoOut);
         assertEquals(item.getId(), itemDtoOut.getId());
@@ -42,7 +41,7 @@ public class ItemMapperTest {
         ItemDtoIn itemDtoIn =
                 new ItemDtoIn(1L, "name", "description", false, null);
 
-        Item item = toItem(itemDtoIn, owner);
+        Item item = itemMapper.toItem(itemDtoIn);
 
         assertNotNull(item);
         assertNotNull(item.getOwner());

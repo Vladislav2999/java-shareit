@@ -2,24 +2,19 @@ package ru.practicum.shareit.comment.mapper;
 
 import lombok.NoArgsConstructor;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.comment.model.dto.CommentDto;
+import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.user.service.UserService;
 
-@Mapper
-@NoArgsConstructor
-public class CommentMapper {
-    public static Comment toComment(CommentDto commentDto) {
-        return new Comment(
-                commentDto.getId(),
-                commentDto.getText(),
-                commentDto.getCreated()
-        );
-    }
+@Mapper(componentModel = "spring", uses = {UserService.class, ItemService.class})
+public interface CommentMapper {
 
-    public static CommentDto toCommentDto(Comment comment) {
-        return new CommentDto(comment.getId(),
-                comment.getText(),
-                comment.getAuthor().getName(),
-                comment.getCreated());
-    }
+    @Mapping(target = "authorName", expression = "java(comment.getAuthor().getName())")
+    CommentDto toCommentDto(Comment comment);
+
+    @Mapping(target = "item", ignore = true)
+    @Mapping(target = "author", ignore = true)
+    Comment toComment(CommentDto commentDto);
 }

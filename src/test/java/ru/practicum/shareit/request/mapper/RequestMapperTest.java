@@ -10,20 +10,21 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static ru.practicum.shareit.request.mapper.RequestMapper.toItemRequest;
-import static ru.practicum.shareit.request.mapper.RequestMapper.toItemRequestDto;
+
 
 
 public class RequestMapperTest {
 
     private final User requestor = new User(1L, "requestor", "requestor@mail.ru");
 
+    private RequestMapper requestMapper;
+
     @Test
     void toItemRequestTest() {
         ItemRequestDto itemRequestDto =
                 new ItemRequestDto(1L, "description", LocalDateTime.now(), null);
 
-        ItemRequest itemRequest = toItemRequest(itemRequestDto);
+        ItemRequest itemRequest = requestMapper.toItemRequest(itemRequestDto);
 
         assertNotNull(itemRequest);
         assertEquals(itemRequestDto.getId(), itemRequest.getId());
@@ -34,7 +35,7 @@ public class RequestMapperTest {
     void toItemRequestDtoTest() {
         ItemRequest itemRequest = new ItemRequest(1L, "description", requestor, LocalDateTime.now());
 
-        ItemRequestDto itemRequestDto = toItemRequestDto(itemRequest);
+        ItemRequestDto itemRequestDto = requestMapper.toItemRequestDto(itemRequest);
 
         assertNotNull(itemRequestDto);
         assertEquals(itemRequest.getId(), itemRequestDto.getId());

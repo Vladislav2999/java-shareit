@@ -35,6 +35,8 @@ public class CommentServiceImpl implements CommentService {
     private final ItemService itemService;
     private final BookingRepository bookingRepository;
 
+    private final CommentMapper commentMapper;
+
     @Override
     @Transactional
     public CommentDto create(CommentDto commentDto, Long itemId, Long userId) {
@@ -48,11 +50,11 @@ public class CommentServiceImpl implements CommentService {
                 .filter(b -> b.getItem().getId().equals(itemId))
                 .collect(Collectors.toList());
         if (bookings.size() != 0) {
-            Comment comment = CommentMapper.toComment(commentDto);
+            Comment comment = commentMapper.toComment(commentDto);
             comment.setAuthor(bookings.get(0).getBooker());
             comment.setItem(item);
             commentRepository.save(comment);
-            return CommentMapper.toCommentDto(comment);
+            return commentMapper.toCommentDto(comment);
         } else {
             throw new CommentException("Не обнаружено подтвержденных бронирований у вещи " + itemId);
         }

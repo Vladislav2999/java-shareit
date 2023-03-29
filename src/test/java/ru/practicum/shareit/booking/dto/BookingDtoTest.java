@@ -24,12 +24,6 @@ public class BookingDtoTest {
     @Test
     void bookingDtoTest() throws Exception {
         BookingDtoOut bookingDtoOut = new BookingDtoOut(
-                1L,
-                START,
-                END,
-                null,
-                null,
-                null
         );
 
         JsonContent<BookingDtoOut> result = jacksonTester.write(bookingDtoOut);

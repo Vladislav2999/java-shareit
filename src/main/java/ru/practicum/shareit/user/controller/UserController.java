@@ -19,9 +19,11 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
 
+    private UserMapper userMapper;
+
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid UserDto userDto) {
-        return ResponseEntity.ok().body(userService.create(UserMapper.toUser(userDto)));
+        return ResponseEntity.ok().body(userService.create(userMapper.toUser(userDto)));
     }
 
     @PatchMapping("/{id}")
@@ -43,7 +45,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
-        return ResponseEntity.ok().body(userService.getAll().stream().map(UserMapper::toUserDto)
+        return ResponseEntity.ok().body(userService.getAll().stream().map(userMapper::toUserDto)
                 .collect(Collectors.toList()));
     }
 

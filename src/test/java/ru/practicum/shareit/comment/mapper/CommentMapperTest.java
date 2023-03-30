@@ -10,19 +10,20 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static ru.practicum.shareit.comment.mapper.CommentMapper.toComment;
-import static ru.practicum.shareit.comment.mapper.CommentMapper.toCommentDto;
+
 
 
 public class CommentMapperTest {
 
     private final LocalDateTime commentTime = LocalDateTime.now().minusDays(1);
 
+    private CommentMapper commentMapper;
+
     @Test
     void toCommentTest() {
         CommentDto commentDto = new CommentDto(1L, "text", "Name", commentTime);
 
-        Comment comment = toComment(commentDto);
+        Comment comment = commentMapper.toComment(commentDto);
 
         assertNotNull(comment);
         assertEquals(commentDto.getId(), comment.getId());
@@ -37,7 +38,7 @@ public class CommentMapperTest {
         Item item = new Item(1L, "name", "description", true, owner);
         Comment comment = new Comment(1L, "text", item, commentator, commentTime);
 
-        CommentDto commentDto = toCommentDto(comment);
+        CommentDto commentDto = commentMapper.toCommentDto(comment);
 
         assertNotNull(comment);
         assertEquals(comment.getId(), commentDto.getId());

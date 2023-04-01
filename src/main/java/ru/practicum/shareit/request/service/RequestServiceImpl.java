@@ -2,6 +2,7 @@ package ru.practicum.shareit.request.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import ru.practicum.shareit.request.repository.RequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -28,16 +30,20 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @Slf4j
 public class RequestServiceImpl implements RequestService {
-
     private final UserRepository userRepository;
-
     private final ItemRepository itemRepository;
-
     private final RequestRepository itemRequestRepository;
-
+    private final ItemMapper itemMapper;
     private final RequestMapper requestMapper;
 
-    private final ItemMapper itemMapper;
+    @Autowired
+    public RequestServiceImpl(ItemMapper itemMapper, RequestMapper requestMapper, UserRepository userRepository, ItemRepository itemRepository, RequestRepository itemRequestRepository) {
+        this.itemMapper = itemMapper;
+        this.requestMapper = requestMapper;
+        this.userRepository = userRepository;
+        this.itemRepository = itemRepository;
+        this.itemRequestRepository = itemRequestRepository;
+    }
 
     @Transactional(readOnly = true)
     @Override

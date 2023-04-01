@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking.mapper;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.practicum.shareit.booking.dto.BookingDtoIn;
 import ru.practicum.shareit.booking.dto.BookingDtoOut;
 import ru.practicum.shareit.booking.model.Booking;
@@ -12,7 +13,6 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 
 public class BookingMapperTest {
@@ -27,8 +27,8 @@ public class BookingMapperTest {
 
     private final Item item = new Item(1L, "name", "description", true, owner);
 
-    private BookingMapper bookingMapper;
-
+    @Autowired
+    BookingMapperImpl bookingMapper;
 
     @Test
     public void toBookingDtoOutTest() {
@@ -54,9 +54,9 @@ public class BookingMapperTest {
 
     @Test
     public void toBookingTest() {
-        BookingDtoIn bookingDtoIn = new BookingDtoIn();
+        BookingDtoIn bookingDtoIn = new BookingDtoIn(null, START, END, null);
 
-        Booking booking = bookingMapper.toBooking(bookingDtoIn);
+        Booking booking =bookingMapper.toBooking(bookingDtoIn);
 
         assertNotNull(booking);
         assertEquals(START, booking.getStart());

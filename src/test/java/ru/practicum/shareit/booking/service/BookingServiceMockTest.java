@@ -82,7 +82,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getId(), savedBooking.getId());
         Assertions.assertEquals(booking.getStart(), savedBooking.getStart());
         Assertions.assertEquals(booking.getEnd(), savedBooking.getEnd());
-        Assertions.assertEquals(booking.getBooker().getId(), savedBooking.getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), savedBooking.getBooker());
         Assertions.assertEquals(booking.getStatus(), savedBooking.getStatus());
     }
 
@@ -166,7 +166,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBooking.getStart());
         Assertions.assertEquals(booking.getEnd(), foundBooking.getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBooking.getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBooking.getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBooking.getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBooking.getStatus());
     }
 
@@ -205,7 +205,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -227,7 +227,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -244,7 +244,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -261,7 +261,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -278,7 +278,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -295,7 +295,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -322,7 +322,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -344,7 +344,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -361,7 +361,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -378,7 +378,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -395,7 +395,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 
@@ -412,7 +412,7 @@ public class BookingServiceMockTest {
         Assertions.assertEquals(booking.getStart(), foundBookings.get(0).getStart());
         Assertions.assertEquals(booking.getEnd(), foundBookings.get(0).getEnd());
         Assertions.assertEquals(booking.getItem().getId(), foundBookings.get(0).getItem().getId());
-        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker().getId());
+        Assertions.assertEquals(booking.getBooker().getId(), foundBookings.get(0).getBooker());
         Assertions.assertEquals(booking.getStatus(), foundBookings.get(0).getStatus());
     }
 

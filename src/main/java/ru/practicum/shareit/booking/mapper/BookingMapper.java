@@ -12,8 +12,6 @@ import ru.practicum.shareit.user.mapper.UserMapper;
 public interface BookingMapper {
 
 
-
-
     BookingDtoOut toBookingDtoOut(Booking booking);
 
     Booking toBooking(BookingDtoIn bookingDtoIn);

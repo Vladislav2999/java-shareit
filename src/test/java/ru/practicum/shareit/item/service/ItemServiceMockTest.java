@@ -5,8 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.practicum.shareit.booking.repository.BookingRepository;
+import ru.practicum.shareit.comment.mapper.CommentMapper;
 import ru.practicum.shareit.comment.repository.CommentRepository;
 import ru.practicum.shareit.exceptionHandler.exception.EntityNotFoundException;
+import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.dto.ItemDtoIn;
 import ru.practicum.shareit.item.model.dto.ItemDtoOut;
@@ -42,6 +44,9 @@ public class ItemServiceMockTest {
 
     private ItemDtoIn itemDto;
 
+    private CommentMapper commentMapper;
+    private  ItemMapper itemMapper;
+
     @BeforeEach
     void beforeEach() {
         userRepository = Mockito.mock(UserRepository.class);
@@ -49,12 +54,16 @@ public class ItemServiceMockTest {
         BookingRepository bookingRepository = Mockito.mock(BookingRepository.class);
         CommentRepository commentRepository = Mockito.mock(CommentRepository.class);
         requestRepository = Mockito.mock(RequestRepository.class);
+        commentMapper=Mockito.mock(CommentMapper.class);
+        itemMapper = Mockito.mock(ItemMapper.class);
         itemService = new ItemServiceImpl(
                 requestRepository,
                 itemRepository,
                 userRepository,
                 bookingRepository,
-                commentRepository
+                commentRepository,
+                commentMapper,
+                itemMapper
         );
 
         user = new User(1L, "testName", "test@mail.com");

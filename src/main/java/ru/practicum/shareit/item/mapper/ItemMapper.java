@@ -8,9 +8,9 @@ import ru.practicum.shareit.item.model.dto.ItemDtoIn;
 import ru.practicum.shareit.item.model.dto.ItemDtoOut;
 
 @Mapper(componentModel = "spring", uses = {CommentMapper.class})
-public interface ItemMapper {
+ public interface ItemMapper {
 
- ItemDtoOut toItemDtoOut(Item item);
+   ItemDtoOut toItemDtoOut(Item item);
 
- Item toItem(ItemDtoIn itemDto);
+   Item toItem(ItemDtoIn itemDto);
 }

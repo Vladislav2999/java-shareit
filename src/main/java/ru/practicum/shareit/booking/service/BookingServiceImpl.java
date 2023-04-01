@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -39,6 +40,7 @@ import static org.apache.commons.lang3.BooleanUtils.isTrue;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
+    @Autowired
     private final BookingMapper bookingMapper;
 
     private final UserService userService;

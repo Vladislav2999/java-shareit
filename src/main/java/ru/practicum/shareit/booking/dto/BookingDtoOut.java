@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class BookingDtoOut {
 
     private Long id;

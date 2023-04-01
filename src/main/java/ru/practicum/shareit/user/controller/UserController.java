@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
 
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid UserDto userDto) {

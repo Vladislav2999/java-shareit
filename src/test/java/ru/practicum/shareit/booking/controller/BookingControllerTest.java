@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.dto.BookingDtoIn;
 import ru.practicum.shareit.booking.dto.BookingDtoOut;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BookingController.class)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class BookingControllerTest {
 
     private static final LocalDateTime START = LocalDateTime.now().plusDays(1);
@@ -60,7 +62,7 @@ public class BookingControllerTest {
 
     @Test
     void createTest() throws Exception {
-        when(bookingService.create(any(BookingDtoIn.class), anyLong()))
+        when(bookingService.create(any(BookingDtoOut.class), anyLong()))
                 .thenReturn(bookingDtoOut);
 
         mockMvc.perform(post("/bookings")

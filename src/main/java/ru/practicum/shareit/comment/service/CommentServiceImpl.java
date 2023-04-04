@@ -2,6 +2,7 @@ package ru.practicum.shareit.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import ru.practicum.shareit.comment.repository.CommentRepository;
 import ru.practicum.shareit.exceptionHandler.exception.CommentException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.item.service.ItemServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,9 +35,8 @@ public class CommentServiceImpl implements CommentService {
     private static final int MAX_SIZE = 10000;
 
     private final CommentRepository commentRepository;
-    private final ItemService itemService;
+    private final ItemServiceImpl itemService;
     private final BookingRepository bookingRepository;
-
     private final CommentMapper commentMapper;
 
     @Override

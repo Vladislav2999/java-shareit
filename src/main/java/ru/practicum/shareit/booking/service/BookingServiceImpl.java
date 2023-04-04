@@ -1,26 +1,32 @@
 package ru.practicum.shareit.booking.service;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingDtoIn;
+import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingDtoOut;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exceptionHandler.exception.BookingException;
+import ru.practicum.shareit.exceptionHandler.exception.CommentException;
 import ru.practicum.shareit.exceptionHandler.exception.WrongBookingStateException;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.exceptionHandler.exception.EntityNotFoundException;
 
@@ -34,39 +40,50 @@ import static org.apache.commons.lang3.BooleanUtils.isFalse;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 @Service
+@Builder
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
+@Primary
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
-    @Autowired
     private final BookingMapper bookingMapper;
 
     private final UserService userService;
 
+    private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
     private final ItemService itemService;
 
     private final Sort sort = Sort.by(Sort.Direction.DESC, "start");
 
-    @Override
+
+
+
     @Transactional
-    public BookingDtoOut create(BookingDtoIn bookingDto, Long userId) {
-        log.info("Запрос бронирования от пользователя с id " + userId);
-        Item item = itemService.getItemById(bookingDto.getItemId());
-        if (item.getOwner().getId().equals(userId)) {
-            throw new EntityNotFoundException("Пользователь, создавший запрос, является владельцем данной вещи");
+    @Override
+    public BookingDtoOut create(BookingDtoOut bookingDtoOut, Long userId) {
+        if (bookingDtoOut.getEnd().isBefore(bookingDtoOut.getStart()) ||
+                bookingDtoOut.getEnd().isEqual(bookingDtoOut.getStart())) {
+            throw new CommentException("end не может быть раньше start");
         }
-        Booking booking = bookingMapper.toBooking(bookingDto);
-        User user = userService.getById(userId);
-        booking.setBooker(user);
-        booking.setItem(item);
-        if (booking.getItem().getAvailable()
-                && !booking.getStart().isAfter(booking.getEnd())) {
-            booking.setStatus(Status.WAITING);
+        User booker = getUser(userId);
+        Item item = getItem(bookingDtoOut.getId());
+        if (booker.getId().equals(item.getOwner().getId())) {
+            throw new EntityNotFoundException("Owner не может забронировать собственный item");
+        }
+        Booking booking = Booking.builder()
+                .start(bookingDtoOut.getStart())
+                .end(bookingDtoOut.getEnd())
+                .item(item)
+                .booker(booker)
+                .status(Status.WAITING)
+                .build();
+        if (item.getAvailable()) {
             return bookingMapper.toBookingDtoOut(bookingRepository.save(booking));
         } else {
-            throw new BookingException("Вещь не доступна для аренды в данный момент");
+            throw new WrongBookingStateException("item недоступен");
         }
     }
 
@@ -179,4 +196,26 @@ public class BookingServiceImpl implements BookingService {
 
         return bookings.stream().map(bookingMapper::toBookingDtoOut).collect(Collectors.toList());
     }
+
+    private Booking getBooking(Long bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingException("бронирование не найдено"));
+    }
+
+    private User getUser(Long itemId) {
+        return userRepository.findById(itemId)
+                .orElseThrow(() -> new EntityNotFoundException("User id=%s не найден"));
+    }
+
+    private Item getItem(Long itemId) {
+        return itemRepository.findById(itemId)
+                .orElseThrow(() -> new EntityNotFoundException("Item id=%s не найден"));
+    }
+
+    private List<BookingDtoOut> mapListToDto(Page<Booking> bookingList) {
+        return bookingList.stream()
+                .map(bookingMapper:: toBookingDtoOut)
+                .collect(Collectors.toList());
+    }
+
 }

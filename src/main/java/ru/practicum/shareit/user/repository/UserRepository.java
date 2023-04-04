@@ -8,5 +8,4 @@ import ru.practicum.shareit.user.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByEmailIgnoreCase(String emailSearch);
 }

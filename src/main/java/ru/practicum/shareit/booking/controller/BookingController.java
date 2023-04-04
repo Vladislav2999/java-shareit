@@ -22,7 +22,7 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<BookingDtoOut> create(@RequestHeader(SHARER_USER_ID) Long userId,
-                                                @Validated @RequestBody BookingDtoIn bookingDto) {
+                                                @Validated @RequestBody BookingDtoOut bookingDto) {
         return ResponseEntity.ok().body(bookingService.create(bookingDto, userId));
 
     }

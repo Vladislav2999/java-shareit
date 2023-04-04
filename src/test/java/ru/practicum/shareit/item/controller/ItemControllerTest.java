@@ -10,17 +10,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.comment.model.dto.CommentDto;
 import ru.practicum.shareit.comment.service.CommentService;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoIn;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.model.dto.ItemDtoIn;
-import ru.practicum.shareit.item.model.dto.ItemDtoOut;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoOut;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -31,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ItemController.class)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class ItemControllerTest {
 
     @MockBean
@@ -47,7 +50,7 @@ public class ItemControllerTest {
 
     private Item item;
 
-    private ItemDtoIn itemDtoIn;
+    private ItemDtoIn itemDto;
 
     private ItemDtoOut itemDtoOut;
 
@@ -55,8 +58,8 @@ public class ItemControllerTest {
     void beforeEach() {
         User user = new User(1L, "name", "email@mail.ru");
         item = new Item(1L, "name", "description", true, user);
-        itemDtoIn = new ItemDtoIn(null, "name", "description", true, null);
-        itemDtoOut = new ItemDtoOut(1L, "name", "description", true, null);
+        itemDto = new ItemDtoIn(null, "name", "description", true, null);
+        itemDtoOut = new ItemDtoOut(1L, "name", "description", user.getId(), true, null, new ArrayList<>(), null, null);
     }
 
     @Test
@@ -65,7 +68,7 @@ public class ItemControllerTest {
                 .thenReturn(itemDtoOut);
 
         mockMvc.perform(post("/items")
-                        .content(mapper.writeValueAsString(itemDtoIn))
+                        .content(mapper.writeValueAsString(itemDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("X-Sharer-User-Id", 1L)
@@ -80,7 +83,11 @@ public class ItemControllerTest {
                 1L,
                 "nameUpdated",
                 "descriptionUpdated",
+                1L,
                 false,
+                null,
+                null,
+                null,
                 null
         );
 

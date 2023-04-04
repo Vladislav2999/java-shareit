@@ -10,34 +10,35 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 public class BookingDtoOut {
 
-    private Long id;
+        private Long id;
 
-    private LocalDateTime start;
+        private LocalDateTime start;
 
-    private LocalDateTime end;
+        private LocalDateTime end;
 
-    private Item item;
+        private Item item;
 
-    private Booker booker;
+        private Booker booker;
 
-    private Status status;
+        private Status status;
 
-    @Setter
-    @Getter
-    @AllArgsConstructor
-    public static class Item {
-        private final long id;
-        private final String name;
-    }
+        @Setter
+        @Getter
+        @AllArgsConstructor
+        public static class Item {
+                private final long id;
+                private final String name;
+        }
 
-    @Setter
-    @Getter
-    @AllArgsConstructor
-    public static class Booker {
-        private final long booker;
-        private final String name;
-    }
+        @Setter
+        @Getter
+        @AllArgsConstructor
+        public static class Booker {
+                private final long booker;
+                private final String name;
+        }
 
 }

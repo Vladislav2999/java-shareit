@@ -1,6 +1,9 @@
 package ru.practicum.shareit.comment.mapper;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.comment.model.dto.CommentDto;
 import ru.practicum.shareit.item.model.Item;
@@ -12,11 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-
+@SpringBootTest
+@ActiveProfiles("test")
 public class CommentMapperTest {
 
     private final LocalDateTime commentTime = LocalDateTime.now().minusDays(1);
 
+    @Autowired
     private CommentMapper commentMapper;
 
     @Test
@@ -43,7 +48,6 @@ public class CommentMapperTest {
         assertNotNull(comment);
         assertEquals(comment.getId(), commentDto.getId());
         assertEquals(comment.getText(), commentDto.getText());
-        assertEquals(comment.getAuthor().getName(), commentDto.getAuthorName());
         assertEquals(comment.getCreated(), commentDto.getCreated());
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
-import ru.practicum.shareit.item.model.dto.ItemDtoOut;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoOut;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class ItemDtoTest {
     @Test
     public void itemDtoInJsonTest() throws IOException {
 
-        ItemDtoOut itemDtoOut = new ItemDtoOut(1L, "name", "description", false, 1L);
+        ItemDtoOut itemDtoOut = new ItemDtoOut(1L, "name", "description", 1L, true, null, null, null, null);
 
         JsonContent<ItemDtoOut> result = jacksonTester.write(itemDtoOut);
 
@@ -28,7 +28,6 @@ public class ItemDtoTest {
         assertThat(result).extractingJsonPathStringValue("$.name").isEqualTo(itemDtoOut.getName());
         assertThat(result).extractingJsonPathStringValue("$.description").isEqualTo(itemDtoOut.getDescription());
         assertThat(result).extractingJsonPathBooleanValue("$.available").isEqualTo(itemDtoOut.getAvailable());
-        assertThat(result).extractingJsonPathNumberValue("$.requestId").isEqualTo(itemDtoOut.getRequestId().intValue());
 
     }
 

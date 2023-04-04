@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.repository.BookingRepository;
@@ -15,9 +16,9 @@ import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.comment.repository.CommentRepository;
 import ru.practicum.shareit.exceptionHandler.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoIn;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoOut;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.model.dto.ItemDtoIn;
-import ru.practicum.shareit.item.model.dto.ItemDtoOut;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.RequestRepository;
@@ -48,18 +49,17 @@ public class ItemServiceImpl implements ItemService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
     private final ItemMapper itemMapper;
-
-
+    private final BookingMapper bookingMapper;
 
     @Override
     @Transactional
-    public ItemDtoOut create(ItemDtoIn itemDto, Long userId) {
+    public ItemDtoOut create(ItemDtoIn itemDtoIn, Long userId) {
         log.info("Запрос создания новой вещи от пользователя с id " + userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + userId + " не найден"));
-        Item item = itemMapper.toItem(itemDto);
-        if (itemDto.getRequestId() != null) {
-            ItemRequest itemRequest = requestRepository.findById(itemDto.getRequestId())
+        Item item = itemMapper.toItem(itemDtoIn);
+        if (itemDtoIn.getRequestId() != null) {
+            ItemRequest itemRequest = requestRepository.findById(itemDtoIn.getRequestId())
                     .orElseThrow(() -> new EntityNotFoundException("Запрос вещи, переданный в параметре не найден"));
             item.setRequest(itemRequest);
         }
@@ -70,13 +70,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public ItemDtoOut update(ItemDtoIn itemDto, Long userId) {
+    public ItemDtoOut update(ItemDtoIn itemDtoIn, Long userId) {
         log.info("Запрос обновления вещи от пользователя с id " + userId);
-        User user = userRepository.findById(userId)
+        userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + userId + " не найден"));
-        Item oldItem = itemRepository.findById(itemDto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("вещь с id " + itemDto.getId() + " не найдена"));
-        Item newItem = itemMapper.toItem(itemDto);
+        Item oldItem = itemRepository.findById(itemDtoIn.getId())
+                .orElseThrow(() -> new EntityNotFoundException("вещь с id " + itemDtoIn.getId() + " не найдена"));
+        Item newItem = itemMapper.toItem(itemDtoIn);
         if (oldItem.getOwner().getId().equals(userId)) {
             patchItem(oldItem, newItem);
             return getByItemIdAndUserId(userId, oldItem.getId());
@@ -111,12 +111,8 @@ public class ItemServiceImpl implements ItemService {
                 Sort.by(Sort.Direction.DESC, "start"))
                 .orElseThrow(() -> new EntityNotFoundException("Информация отсутсвует")));
 
-        itemResponse.setLastBooking(lastBooking == null ? null : new ItemDtoOut.Booking(
-                lastBooking.get().getId(),
-                lastBooking.get().getBooker().getId()));
-        itemResponse.setNextBooking(nextBooking == null ? null : new ItemDtoOut.Booking(
-                nextBooking.get().getId(),
-                nextBooking.get().getBooker().getId()));
+        itemResponse.setLastBooking(lastBooking.map(bookingMapper::toBookingDtoOut).orElse(null));
+        itemResponse.setNextBooking(nextBooking.map(bookingMapper::toBookingDtoOut).orElse(null));
 
         return itemResponse;
     }
@@ -158,7 +154,6 @@ public class ItemServiceImpl implements ItemService {
                 .collect(toList());
     }
 
-    @Override
     public Item getItemById(Long itemId) {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Вещь не сущестует"));
@@ -166,7 +161,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public ItemDtoOut addBookings(Item item, List<Booking> bookings) {
-        ItemDtoOut itemDto = itemMapper.toItemDtoOut(item);
+        ItemDtoOut itemDtoOut = itemMapper.toItemDtoOut(item);
         LocalDateTime now = LocalDateTime.now();
 
         Booking lastBooking = bookings.stream()
@@ -181,13 +176,13 @@ public class ItemServiceImpl implements ItemService {
                 .orElse(null);
 
         if (lastBooking != null) {
-            itemDto.setLastBooking(new ItemDtoOut.Booking(lastBooking.getId(), lastBooking.getBooker().getId()));
+            itemDtoOut.setLastBooking(bookingMapper.toBookingDtoOut(lastBooking));
         }
         if (nextBooking != null) {
-            itemDto.setNextBooking(new ItemDtoOut.Booking(nextBooking.getId(), nextBooking.getBooker().getId()));
+            itemDtoOut.setNextBooking(bookingMapper.toBookingDtoOut(nextBooking));
         }
 
-        return itemDto;
+        return itemDtoOut;
     }
 
     public ItemDtoOut addComments(ItemDtoOut itemDto, List<Comment> comments) {

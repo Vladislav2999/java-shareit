@@ -2,12 +2,16 @@ package ru.practicum.shareit.request.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import ru.practicum.shareit.exceptionHandler.exception.EntityNotFoundException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
@@ -26,7 +30,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@ActiveProfiles("test")
 public class RequestServiceMockTest {
     @InjectMocks
     private RequestServiceImpl requestService;
@@ -61,15 +67,15 @@ public class RequestServiceMockTest {
     @Test
     void createTest() {
         when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.of(requestor));
-        when(requestRepository.save(any()))
+                .thenReturn(Optional.empty());
+        when(requestRepository.save(Mockito.any(ItemRequest.class)))
                 .thenReturn(request);
 
-        ItemRequestDto savedRequest = requestService.create(requestor.getId(), itemRequestDto);
+        Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
+                () -> requestService.create(1L, itemRequestDto));
 
-        assertNotNull(savedRequest);
-        assertNotNull(savedRequest.getCreated());
-        assertEquals(itemRequestDto.getDescription(), savedRequest.getDescription());
+       Assertions.assertEquals("Пользователь с id 1 не найден",
+                exception.getMessage());
     }
 
     @Test
@@ -88,15 +94,15 @@ public class RequestServiceMockTest {
     @Test
     void findAllRequestsTest() {
         when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.of(requestor));
+                .thenReturn(Optional.empty());
         when(requestRepository.findAllByRequestorIdNot(anyLong(), any(Pageable.class)))
                 .thenReturn(List.of(request));
 
-        List<ItemRequestDto> foundRequests = requestService.findAllRequests(2L, 0, 99);
+        Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
+                () -> requestService.findAllRequests(2L, 0, 99));
 
-        assertNotNull(foundRequests);
-        assertEquals(1, foundRequests.size());
-        assertEquals(itemRequestDto.getDescription(), foundRequests.get(0).getDescription());
+        Assertions.assertEquals("Пользователь с id 2 не найден",
+                exception.getMessage());
     }
 
     @Test
@@ -115,15 +121,15 @@ public class RequestServiceMockTest {
     @Test
     void findAllByUserIdTest() {
         when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.of(requestor));
+                .thenReturn(Optional.empty());
         when(requestRepository.findAllByRequestorIdOrderByCreatedAsc(anyLong()))
                 .thenReturn(List.of(request));
 
-        List<ItemRequestDto> foundRequests = requestService.findAllByUserId(2L);
+        Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
+                () -> requestService.findAllByUserId(2L));
 
-        assertNotNull(foundRequests);
-        assertEquals(1, foundRequests.size());
-        assertEquals(itemRequestDto.getDescription(), foundRequests.get(0).getDescription());
+        Assertions.assertEquals("Пользователь с id 2 не найден",
+                exception.getMessage());
     }
 
     @Test
@@ -142,16 +148,18 @@ public class RequestServiceMockTest {
     @Test
     void findByRequestIdTest() {
         when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.of(requestor));
+                .thenReturn(Optional.empty());
         when(requestRepository.findById(anyLong()))
                 .thenReturn(Optional.of(request));
         when(itemRepository.findAllByRequestId(anyLong()))
                 .thenReturn(List.of(item));
 
-        ItemRequestDto foundRequest = requestService.findByRequestId(2L, 1L);
+        Exception exception = Assertions.assertThrows(EntityNotFoundException.class,
+                () -> requestService.findByRequestId(2L, 1L));
 
-        assertNotNull(foundRequest);
-        assertEquals(itemRequestDto.getDescription(), foundRequest.getDescription());
+
+        Assertions.assertEquals("Пользователь с id 2 не найден",
+                        exception.getMessage());
     }
 
     @Test

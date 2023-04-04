@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.comment.model.dto.CommentDto;
 import ru.practicum.shareit.comment.service.CommentService;
-import ru.practicum.shareit.item.model.dto.ItemDtoIn;
-import ru.practicum.shareit.item.model.dto.ItemDtoOut;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoIn;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoOut;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
@@ -27,17 +27,17 @@ public class ItemController {
     private static final String SHARER_USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
-    public ResponseEntity<ItemDtoOut> create(@RequestBody @Valid ItemDtoIn itemDto,
+    public ResponseEntity<ItemDtoOut> create(@RequestBody @Valid ItemDtoIn itemDtoIn,
                                              @RequestHeader(SHARER_USER_ID) Long userId) {
-        return ResponseEntity.ok().body(itemService.create(itemDto, userId));
+        return ResponseEntity.ok().body(itemService.create(itemDtoIn, userId));
     }
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<ItemDtoOut> update(@RequestHeader(SHARER_USER_ID) Long userId,
                                              @PathVariable("itemId") Long itemId,
-                                             @RequestBody ItemDtoIn itemDto) {
-        itemDto.setId(itemId);
-        return ResponseEntity.ok().body(itemService.update(itemDto, userId));
+                                             @RequestBody ItemDtoIn itemDtoIn) {
+        itemDtoIn.setId(itemId);
+        return ResponseEntity.ok().body(itemService.update(itemDtoIn, userId));
 
     }
 
@@ -53,7 +53,7 @@ public class ItemController {
                                                      @RequestParam(value = "from", defaultValue = "0")
                                                      @PositiveOrZero int from,
                                                      @RequestParam(value = "size", defaultValue = "10")
-                                                         @Positive int size) {
+                                                     @Positive int size) {
         return ResponseEntity.ok().body(itemService.getAll(userId, from, size));
 
     }
@@ -62,9 +62,9 @@ public class ItemController {
     public ResponseEntity<List<ItemDtoOut>> getItemsByText(@RequestHeader(SHARER_USER_ID) Long userId,
                                                            @RequestParam("text") String text,
                                                            @RequestParam(value = "from", defaultValue = "0")
-                                                               @PositiveOrZero int from,
+                                                           @PositiveOrZero int from,
                                                            @RequestParam(value = "size", defaultValue = "10")
-                                                               @Positive int size) {
+                                                           @Positive int size) {
 
         return ResponseEntity.ok().body(itemService.getByText(text, userId, from, size));
     }

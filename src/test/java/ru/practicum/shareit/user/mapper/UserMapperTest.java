@@ -1,15 +1,20 @@
 package ru.practicum.shareit.user.mapper;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.dto.UserDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+@SpringBootTest
+@ActiveProfiles("test")
 public class UserMapperTest {
 
-private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     public void toUserDtoTest() {

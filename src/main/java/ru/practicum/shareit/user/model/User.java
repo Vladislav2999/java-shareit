@@ -3,7 +3,7 @@ package ru.practicum.shareit.user.model;
 import lombok.*;
 
 import javax.persistence.*;
-
+@Builder
 @Entity
 @Table(name = "users")
 @Getter

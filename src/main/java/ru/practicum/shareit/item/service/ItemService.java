@@ -1,8 +1,8 @@
 package ru.practicum.shareit.item.service;
 
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.model.dto.ItemDtoIn;
-import ru.practicum.shareit.item.model.dto.ItemDtoOut;
+
+import ru.practicum.shareit.item.mapper.dto.ItemDtoIn;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoOut;
 
 import java.util.List;
 
@@ -11,11 +11,9 @@ public interface ItemService {
 
     ItemDtoOut update(ItemDtoIn itemDto, Long userId);
 
-    ItemDtoOut getById(Long itemId, Long ownerId);
+    ItemDtoOut getByItemIdAndUserId(Long itemId, Long ownerId);
 
-    List<ItemDtoOut> getAll(Long userId);
+    List<ItemDtoOut> getAll(Long userId, int from, int size);
 
-    List<ItemDtoOut> getByText(String text,  Long ownerId);
-
-    Item getItemById(Long itemId);
+    List<ItemDtoOut> getByText(String text,  Long ownerId, int from, int size);
 }

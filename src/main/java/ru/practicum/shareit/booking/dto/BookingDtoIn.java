@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 public class BookingDtoIn {
 
     private Long id;
@@ -24,5 +25,6 @@ public class BookingDtoIn {
     @Future
     private LocalDateTime end;
 
+    @NotNull
     private Long itemId;
 }

@@ -1,30 +1,15 @@
 package ru.practicum.shareit.item.mapper;
 
+import org.mapstruct.Mapper;
+import ru.practicum.shareit.comment.mapper.CommentMapper;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.model.dto.ItemDtoIn;
-import ru.practicum.shareit.item.model.dto.ItemDtoOut;
-import ru.practicum.shareit.user.model.User;
 
-public class ItemMapper {
+import ru.practicum.shareit.item.mapper.dto.ItemDtoIn;
+import ru.practicum.shareit.item.mapper.dto.ItemDtoOut;
 
-    public static ItemDtoOut toItemDtoOut(Item item) {
-        return new ItemDtoOut(
-                item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getAvailable()
-        );
-    }
+@Mapper(componentModel = "spring", uses = {CommentMapper.class})
+public interface ItemMapper {
 
-    public static Item toItem(ItemDtoIn itemDto, User user) {
-        return new Item(
-                itemDto.getId(),
-                itemDto.getName(),
-                itemDto.getDescription(),
-                itemDto.getAvailable(),
-                user
-        );
-    }
-
-
+    ItemDtoOut toItemDtoOut(Item item);
+    Item toItem(ItemDtoIn itemDtoIn);
 }

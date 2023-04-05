@@ -1,25 +1,15 @@
+
 package ru.practicum.shareit.user.mapper;
 
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
+        import org.mapstruct.Mapper;
+        import org.mapstruct.ReportingPolicy;
+        import ru.practicum.shareit.user.model.User;
+        import ru.practicum.shareit.user.model.dto.UserDto;
 
-public class UserMapper {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface UserMapper {
 
-    public static UserDto toUserDto(User user) {
-        return new UserDto(
-                user.getId(),
-                user.getName(),
-                user.getEmail()
-        );
-    }
+ UserDto toUserDto(User user);
 
-    public static User toUser(UserDto userDto) {
-        User user = new User();
-        user.setId(userDto.getId());
-        user.setEmail(userDto.getEmail());
-        user.setName(userDto.getName());
-        return user;
-    }
-
-
+ User toUser(UserDto userDto);
 }

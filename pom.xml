@@ -14,13 +14,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>ShareIt</name>
+
+
+
 
 	<properties>
 		<java.version>11</java.version>
 		<version.lombok>1.18.26</version.lombok>
 		<version.mapstruct>1.5.3.Final</version.mapstruct>
 		<version.mapstruct-lombok>0.2.0</version.mapstruct-lombok>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
+		<postgresql.version>42.3.8</postgresql.version>
 	</properties>
 
 	<dependencyManagement>

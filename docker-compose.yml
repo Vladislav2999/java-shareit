@@ -2,6 +2,7 @@ version: '3.8'
 services:
   gateway:
     build: gateway
+    restart: on-failure
     image: gateway
     container_name: shareit-gateway
     ports:
@@ -14,6 +15,7 @@ services:
 
   server:
     build: server
+    restart: on-failure
     image: server
     container_name: shareit-server
     ports:

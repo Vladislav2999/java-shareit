@@ -9,6 +9,8 @@ import org.springframework.boot.test.json.JsonContent;
 
 import java.time.LocalDateTime;
 
+import lombok.*;
+
 @JsonTest
 public class BookingDtoTest {
 
